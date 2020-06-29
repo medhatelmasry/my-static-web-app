@@ -6,9 +6,10 @@ api/local.settings.json file should look like this.
     "AzureWebJobsStorage": "",
     "FUNCTIONS_WORKER_RUNTIME": "node",
     "ENDPOINT": "ENDPOINT-HERE",
-    "PARTITION_KEY": "{ \"kind\": \"Hash\", \"paths\": [\"/brand/name\"] }",
+    "PARTITION_KEY": "{ \"kind\": \"Hash\", \"paths\": [\"/name\"] }",
     "KEY": "KEY-HERE",
-    "DATABASE": "Inventory",
+    "DATABASE": "Catalog",
+    
     "CONTAINER": "Products"
   },
   "Host": {
