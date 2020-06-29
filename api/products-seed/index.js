@@ -2,8 +2,8 @@ const data = require('../shared/product-data');
 
 module.exports = async function (context, req) {
   try {
-    const products = await data.getProducts();
-    context.res.status(200).json(products);
+    const result = await data.seedProducts();
+    context.res.status(200).json(result);
   } catch (error) {
     context.res.status(500).send(error);
   }

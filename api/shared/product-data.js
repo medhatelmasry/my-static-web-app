@@ -1,24 +1,58 @@
+const CosmosClient = require("@azure/cosmos").CosmosClient;
+const DbContext = require("../data/data-context");
+const SeedData = require("../data/seed-data");
+
 const data = {
   products: [
     {
-      id: 10,
       name: 'Strawberries',
       description: '16oz package of fresh organic strawberries',
       quantity: '1',
     },
     {
-      id: 20,
       name: 'Sliced bread',
       description: 'Loaf of fresh sliced wheat bread',
       quantity: 1,
     },
     {
-      id: 30,
       name: 'Apples',
       description: 'Bag of 7 fresh McIntosh apples',
       quantity: 1,
     },
   ],
+};
+
+const { ENDPOINT, KEY, DATABASE, CONTAINER, PARTITION_KEY} = process.env;
+const client = new CosmosClient({ endpoint: ENDPOINT, key: KEY });
+const database = client.database(DATABASE);
+const container = database.container(CONTAINER);
+
+const seedProducts = async () => {
+  let partition_key =JSON.parse(PARTITION_KEY);
+  await DbContext.create(client, DATABASE, CONTAINER, partition_key);
+
+  let iterator = container.items.readAll();
+    let { resources } = await iterator.fetchAll();
+
+    if (resources.length > 0) {
+      return {"message": `The database is already seeded with ${resources.length} products.`};
+    } else {
+      
+      const products = SeedData.getSeedProductData();
+
+      products.forEach(async function (item) {
+        const { resource: createdItem } = await container.items.create(item);
+        console.log(item);
+      })
+
+      return {"message": `The database has been seeded with ${products.length} products.`};
+    }
+};
+
+const getProducts = async () => {
+  let iterator = container.items.readAll();
+  let { resources } = await iterator.fetchAll();
+  return resources;
 };
 
 const getRandomInt = () => {
@@ -27,9 +61,8 @@ const getRandomInt = () => {
   return Math.floor(Math.random() * Math.floor(max) + min);
 };
 
-const addProduct = (product) => {
-  product.id = getRandomInt();
-  data.products.push(product);
+const addProduct = async (productToAdd) => {
+  let { product } = await container.items.create(productToAdd);
   return product;
 };
 
@@ -40,14 +73,10 @@ const updateProduct = (product) => {
   return product;
 };
 
-const deleteProduct = (id) => {
-  const value = parseInt(id, 10);
-  data.products = data.products.filter((v) => v.id !== value);
-  return true;
+const deleteProduct = async (id,name) => {
+  const { resource: result } = await container.item(id,name).delete();
+  return result;
 };
 
-const getProducts = () => {
-  return data.products;
-};
 
-module.exports = { addProduct, updateProduct, deleteProduct, getProducts };
+module.exports = {seedProducts, addProduct, updateProduct, deleteProduct, getProducts };
