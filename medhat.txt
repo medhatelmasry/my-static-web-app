@@ -9,7 +9,6 @@ api/local.settings.json file should look like this.
     "PARTITION_KEY": "{ \"kind\": \"Hash\", \"paths\": [\"/name\"] }",
     "KEY": "KEY-HERE",
     "DATABASE": "Catalog",
-    
     "CONTAINER": "Products"
   },
   "Host": {
