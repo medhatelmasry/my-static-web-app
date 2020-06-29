@@ -1,0 +1,19 @@
+api/local.settings.json file should look like this.
+
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "ENDPOINT": "ENDPOINT-HERE",
+    "PARTITION_KEY": "{ \"kind\": \"Hash\", \"paths\": [\"/brand/name\"] }",
+    "KEY": "KEY-HERE",
+    "DATABASE": "Inventory",
+    "CONTAINER": "Products"
+  },
+  "Host": {
+    "CORS": "*"
+  }
+}
+
+
