@@ -2,26 +2,6 @@ const CosmosClient = require("@azure/cosmos").CosmosClient;
 const DbContext = require("../data/data-context");
 const SeedData = require("../data/seed-data");
 
-const data = {
-  products: [
-    {
-      name: 'Strawberries',
-      description: '16oz package of fresh organic strawberries',
-      quantity: '1',
-    },
-    {
-      name: 'Sliced bread',
-      description: 'Loaf of fresh sliced wheat bread',
-      quantity: 1,
-    },
-    {
-      name: 'Apples',
-      description: 'Bag of 7 fresh McIntosh apples',
-      quantity: 1,
-    },
-  ],
-};
-
 const { ENDPOINT, KEY, DATABASE, CONTAINER, PARTITION_KEY} = process.env;
 const client = new CosmosClient({ endpoint: ENDPOINT, key: KEY });
 const database = client.database(DATABASE);
@@ -68,6 +48,5 @@ const updateProduct = async (product) => {
 const deleteProduct = async (id,name) => {
   return await container.item(id,name).delete();
 };
-
 
 module.exports = {seedProducts, addProduct, updateProduct, deleteProduct, getProducts };
