@@ -55,27 +55,18 @@ const getProducts = async () => {
   return resources;
 };
 
-const getRandomInt = () => {
-  const max = 1000;
-  const min = 100;
-  return Math.floor(Math.random() * Math.floor(max) + min);
-};
-
 const addProduct = async (productToAdd) => {
   let { product } = await container.items.create(productToAdd);
   return product;
 };
 
-const updateProduct = (product) => {
-  const index = data.products.findIndex((v) => v.id === product.id);
-  console.log(product);
-  data.products.splice(index, 1, product);
-  return product;
+const updateProduct = async (product) => {
+  const { id, name } = product;
+  return await container.item(id, name).replace(product);
 };
 
 const deleteProduct = async (id,name) => {
-  const { resource: result } = await container.item(id,name).delete();
-  return result;
+  return await container.item(id,name).delete();
 };
 
 

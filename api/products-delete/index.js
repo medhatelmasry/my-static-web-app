@@ -5,8 +5,9 @@ module.exports = async function (context, req) {
   const id = req.params.id;
 
   try {
-    const result = await data.deleteProduct(id,name);
-    context.res.status(200).json({});
+    const { result } = await data.deleteProduct(id,name);
+    console.log("result >> ", result);
+    context.res.status(200).json(result);
   } catch (error) {
     context.res.status(500).send(error);
   }

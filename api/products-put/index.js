@@ -1,14 +1,11 @@
 const data = require('../shared/product-data');
 
 module.exports = async function (context, req) {
-  const product = {
-    id: parseInt(req.params.id, 10),
-    name: req.body.name,
-    description: req.body.description,
-  };
+  
+  const product = req.body;
 
   try {
-    const updatedProduct = data.updateProduct(product);
+    const { updatedProduct } = await data.updateProduct(product);
     context.res.status(200).json(updatedProduct);
   } catch (error) {
     context.res.status(500).send(error);
