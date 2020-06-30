@@ -40,9 +40,15 @@ const addProduct = async (productToAdd) => {
   return product;
 };
 
-const updateProduct = async (product) => {
-  const { id, name } = product;
-  return await container.item(id, name).replace(product);
+const updateProduct = async (id, product) => {
+  // console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+  // console.log("PRODUCT >>>>>>>>>>>>>", product);
+  // console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+  // console.log("PRODUCT Name >>>>>>>>>>>>>", product.name);
+  // console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+  // console.log("ID >>>>>>>>>>>>>", id);
+  // console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+  return await container.item(id, product.name).replace(product);
 };
 
 const deleteProduct = async (id,name) => {

@@ -5,7 +5,8 @@ import API from './config';
 const captains = console;
 
 export const deleteProductApi = async (product) => {
-  const response = await axios.delete(`${API}/products/${product.id}`);
+  captains.log(product.id);
+  const response = await axios.delete(`${API}/products/${product.id}`, {data: product});
   return parseItem(response, 200);
 };
 
