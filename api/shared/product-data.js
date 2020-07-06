@@ -36,6 +36,9 @@ const getProducts = async () => {
 };
 
 const addProduct = async (productToAdd) => {
+  // remove 'id' property from the JSON object
+  delete productToAdd.id;
+
   let { product } = await container.items.create(productToAdd);
   return product;
 };
