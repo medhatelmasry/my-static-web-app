@@ -1,0 +1,34 @@
+﻿@page "/Add"
+@inject HttpClient httpClient
+@inject NavigationManager NavigationManager
+<h1>Add a New Speaker</h1>
+
+<EditForm Model="@product" OnValidSubmit="@HandleAdd" class="form-group">
+  <DataAnnotationsValidator />
+  <ValidationSummary />
+
+   First Name
+  <InputText placeholder="Name" id="name" @bind-Value="@product.Name" class="form-control"/>
+  <br />
+   Last Name
+  <InputText placeholder="Description" id="description" @bind-Value="@product.Description" class="form-control"/>
+  <br />
+  <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+<NavLink class="btn btn-success" href="/">Back</NavLink>
+
+@code {
+    private Product product = new Product();
+
+    private async void HandleAdd() {
+        string baseUrl = Constants.BaseURL;
+        string endpoint = $"{baseUrl}api/products";
+
+        await httpClient.SendJsonAsync(HttpMethod.Post, endpoint, product);
+
+        NavigationManager.NavigateTo("/");
+    }
+}
+
+
+

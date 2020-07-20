@@ -1,0 +1,37 @@
+﻿@page "/edit/{id}"
+@inject HttpClient httpClient
+@inject NavigationManager NavigationManager
+
+<h1>Edit Product</h1>
+
+<EditForm Model="@product" OnValidSubmit="@edit" class="form-group">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    First Name
+    <InputText placeholder="Name" id="firstName" @bind-Value="@product.Name" class="form-control" />
+    <br />
+    Last Name
+    <InputText placeholder="Last Name" id="lastName" @bind-Value="@product.Description" class="form-control" />
+    <br />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+<NavLink class="btn btn-success" href="/">Back</NavLink>
+
+@code {
+    [Parameter]
+    public string id { get; set; }
+    Product product = new Product();
+    string baseUrl = Constants.BaseURL;
+    protected override async Task OnInitializedAsync()
+    {
+        product = await httpClient.GetJsonAsync<Product>($"{baseUrl}api/products/{id}");
+    }
+
+    private async void edit()
+    {
+        string endpoint = $"{baseUrl}api/Products/{id}";
+        await httpClient.SendJsonAsync(HttpMethod.Put, endpoint, product);
+        NavigationManager.NavigateTo("/");
+    }
+}

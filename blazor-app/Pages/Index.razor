@@ -1,0 +1,46 @@
+﻿@page "/"
+@inject HttpClient httpClient
+<h1>Products</h1>
+@if (products == null)
+{
+    <NavLink class="btn btn-primary" href="/add">Add</NavLink>
+}
+else
+{
+    <NavLink class="btn btn-primary" href="/add">Add</NavLink>
+    <table class='table table-hover'>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                @*<th>Quantity</th>*@
+
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in products)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    @*<td>@item.Quantity</td>*@
+
+                    <td><a type="button" class="btn btn-success" href="/edit/@item.Id">Edit</a></td>
+                    <td><a type="button" class="btn btn-danger" href="/delete/@item.Id">Delete</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+    Product[] products;
+    string baseUrl = Constants.BaseURL;
+    protected override async Task OnInitializedAsync()
+    {
+        products = await httpClient.GetJsonAsync<Product[]>($"{baseUrl}api/products");
+    }
+}

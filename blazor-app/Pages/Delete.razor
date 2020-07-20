@@ -1,0 +1,30 @@
+@page "/delete/{id}"
+@inject HttpClient httpClient
+@inject NavigationManager NavigationManager
+
+<h1>Delete</h1>
+@if (product != null)
+{
+    <p>Are your sure you want to delete</p>
+    <p>@product.Name <br /> @product.Description</p>
+    <button type="button" @onclick="@del" class="btn btn-danger">Confirm Delete</button>
+    <NavLink class="btn btn-success" href="/">Back</NavLink>
+}
+@code {
+    [Parameter]
+    public string id { get; set; }
+
+    Product product;
+    string baseUrl = Constants.BaseURL;
+    protected override async Task OnInitializedAsync()
+    {
+        product = await httpClient.GetJsonAsync<Product>($"{baseUrl}api/products/{id}");
+    }
+
+    private async void del()
+    {
+        string endpoint = $"{baseUrl}api/products/{id}";
+        await httpClient.SendJsonAsync(HttpMethod.Delete, endpoint, product);
+        NavigationManager.NavigateTo("/");
+    }
+}
